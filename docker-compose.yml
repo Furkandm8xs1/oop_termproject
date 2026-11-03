@@ -1,0 +1,18 @@
+services:
+  # Interactive console application:  docker compose run --rm foodflow
+  foodflow:
+    build: .
+    image: foodflow:latest
+    stdin_open: true
+    tty: true
+    volumes:
+      - ./data:/app/data:ro
+
+  # Unit tests only:  docker compose run --rm test
+  test:
+    build:
+      context: .
+      target: build
+    command: ["mvn", "-B", "test"]
+    profiles: ["test"]
+

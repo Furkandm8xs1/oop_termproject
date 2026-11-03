@@ -1,0 +1,100 @@
+{
+  "restaurants": [
+    {
+      "id": "R01",
+      "name": "Kebapçı Mehmet",
+      "cuisine": "Turkish",
+      "district": "Kadıköy",
+      "deliveryFee": 25.0,
+      "minimumBasket": 150.0,
+      "menu": [
+        { "id": "R01-01", "name": "Lahmacun", "category": "Main", "price": 140.0 },
+        { "id": "R01-02", "name": "Adana Kebap", "category": "Main", "price": 220.0 },
+        { "id": "R01-03", "name": "Mercimek Çorbası", "category": "Soup", "price": 70.0 },
+        { "id": "R01-04", "name": "Künefe", "category": "Dessert", "price": 110.0 },
+        { "id": "R01-05", "name": "Ayran", "category": "Drink", "price": 40.0 },
+        { "id": "R01-06", "name": "Şalgam", "category": "Drink", "price": 45.0 }
+      ]
+    },
+    {
+      "id": "R02",
+      "name": "Pizzeria Napoli",
+      "cuisine": "Italian",
+      "district": "Beşiktaş",
+      "deliveryFee": 30.0,
+      "minimumBasket": 200.0,
+      "menu": [
+        { "id": "R02-01", "name": "Margherita", "category": "Main", "price": 180.0 },
+        { "id": "R02-02", "name": "Pepperoni Pizza", "category": "Main", "price": 210.0 },
+        { "id": "R02-03", "name": "Penne Arrabbiata", "category": "Main", "price": 170.0 },
+        { "id": "R02-04", "name": "Tiramisu", "category": "Dessert", "price": 120.0 },
+        { "id": "R02-05", "name": "Limonata", "category": "Drink", "price": 50.0 },
+        { "id": "R02-06", "name": "Kola", "category": "Drink", "price": 45.0 }
+      ]
+    },
+    {
+      "id": "R03",
+      "name": "Burger Atölyesi",
+      "cuisine": "American",
+      "district": "Kadıköy",
+      "deliveryFee": 20.0,
+      "minimumBasket": 180.0,
+      "menu": [
+        { "id": "R03-01", "name": "Klasik Burger", "category": "Main", "price": 190.0 },
+        { "id": "R03-02", "name": "Cheeseburger", "category": "Main", "price": 210.0 },
+        { "id": "R03-03", "name": "Tavuk Burger", "category": "Main", "price": 180.0 },
+        { "id": "R03-04", "name": "Patates Kızartması", "category": "Side", "price": 70.0 },
+        { "id": "R03-05", "name": "Milkshake", "category": "Drink", "price": 85.0 },
+        { "id": "R03-06", "name": "Kola", "category": "Drink", "price": 45.0 }
+      ]
+    },
+    {
+      "id": "R04",
+      "name": "Sushi İstanbul",
+      "cuisine": "Japanese",
+      "district": "Şişli",
+      "deliveryFee": 35.0,
+      "minimumBasket": 300.0,
+      "menu": [
+        { "id": "R04-01", "name": "Miso Çorbası", "category": "Soup", "price": 80.0 },
+        { "id": "R04-02", "name": "Somon Nigiri (4 adet)", "category": "Main", "price": 260.0 },
+        { "id": "R04-03", "name": "California Roll (8 adet)", "category": "Main", "price": 280.0 },
+        { "id": "R04-04", "name": "Ton Balıklı Maki (8 adet)", "category": "Main", "price": 300.0 },
+        { "id": "R04-05", "name": "Yeşil Çay", "category": "Drink", "price": 40.0 }
+      ]
+    },
+    {
+      "id": "R05",
+      "name": "Dönerci Usta",
+      "cuisine": "Turkish",
+      "district": "Üsküdar",
+      "deliveryFee": 20.0,
+      "minimumBasket": 120.0,
+      "menu": [
+        { "id": "R05-01", "name": "Tavuk Döner Porsiyon", "category": "Main", "price": 130.0 },
+        { "id": "R05-02", "name": "Et Döner Porsiyon", "category": "Main", "price": 200.0 },
+        { "id": "R05-03", "name": "İskender", "category": "Main", "price": 230.0 },
+        { "id": "R05-04", "name": "Çoban Salata", "category": "Side", "price": 60.0 },
+        { "id": "R05-05", "name": "Baklava (4 dilim)", "category": "Dessert", "price": 120.0 },
+        { "id": "R05-06", "name": "Ayran", "category": "Drink", "price": 35.0 }
+      ]
+    },
+    {
+      "id": "R06",
+      "name": "Yeşil Mutfak",
+      "cuisine": "Vegetarian",
+      "district": "Beşiktaş",
+      "deliveryFee": 15.0,
+      "minimumBasket": 140.0,
+      "menu": [
+        { "id": "R06-01", "name": "Falafel Tabağı", "category": "Main", "price": 150.0 },
+        { "id": "R06-02", "name": "Sebzeli Wrap", "category": "Main", "price": 130.0 },
+        { "id": "R06-03", "name": "Quinoa Salata", "category": "Side", "price": 110.0 },
+        { "id": "R06-04", "name": "Mevsim Çorbası", "category": "Soup", "price": 65.0 },
+        { "id": "R06-05", "name": "Taze Sıkma Portakal Suyu", "category": "Drink", "price": 60.0 },
+        { "id": "R06-06", "name": "Ev Yapımı Limonata", "category": "Drink", "price": 50.0 }
+      ]
+    }
+  ]
+}
+
