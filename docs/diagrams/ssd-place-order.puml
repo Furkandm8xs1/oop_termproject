@@ -1,0 +1,22 @@
+@startuml ssd-place-order
+skinparam style strictuml
+actor Customer
+participant "System" as S
+
+Customer -> S : placeOrder(cart)
+activate S
+S --> Customer : prompt for delivery address
+deactivate S
+
+Customer -> S : provideAddress(address)
+activate S
+S -> S : validate(customer, cart)
+alt validation successful
+    S -> S : createOrder(status=PLACED)
+    S -> S : clear(cart)
+    S --> Customer : display order confirmation (orderNumber, total)
+else validation failed
+    S --> Customer : display error message (e.g. cart empty)
+end
+deactivate S
+@enduml
