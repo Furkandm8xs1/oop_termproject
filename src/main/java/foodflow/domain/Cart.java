@@ -83,13 +83,18 @@ public final class Cart {
                 .setScale(2, RoundingMode.HALF_UP);
     }
 
-    public BigDecimal deliveryFee() {
-        return restaurant == null ? BigDecimal.ZERO.setScale(2) : restaurant.deliveryFee();
+   public BigDecimal deliveryFee() {
+        if (restaurant == null) {
+            return BigDecimal.ZERO.setScale(2, RoundingMode.HALF_UP);
+        }
+        return restaurant.deliveryFee();
     }
 
     /** BR-5: subtotal plus the restaurant's delivery fee. */
     public BigDecimal total() {
-        return subtotal().add(deliveryFee());
+        BigDecimal currentSubtotal = subtotal();
+        BigDecimal currentDeliveryFee = deliveryFee();
+        return currentSubtotal.add(currentDeliveryFee).setScale(2, RoundingMode.HALF_UP);
     }
 }
 
