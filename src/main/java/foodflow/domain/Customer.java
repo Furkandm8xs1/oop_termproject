@@ -18,17 +18,20 @@ public final class Customer {
         this.address = address;
     }
 
-    private static String requireValidEmail(String email) {
+   private static String requireValidEmail(String email) {
         String trimmed = Texts.requireText(email, "E-mail").toLowerCase(java.util.Locale.ROOT);
-        int at = trimmed.indexOf('@');
-        boolean valid = at > 0
-                && at == trimmed.lastIndexOf('@')
-                && at < trimmed.length() - 1
-                && trimmed.chars().noneMatch(Character::isWhitespace);
-        if (!valid) {
+        if (!hasValidEmailFormat(trimmed)) {
             throw new IllegalArgumentException("'" + email + "' is not a valid e-mail address (it must contain '@').");
         }
         return trimmed;
+    }
+
+    private static boolean hasValidEmailFormat(String value) {
+        int atIndex = value.indexOf('@');
+        int lastAtIndex = value.lastIndexOf('@');
+        boolean hasSingleAt = atIndex > 0 && atIndex == lastAtIndex && atIndex < value.length() - 1;
+        boolean containsNoWhitespace = value.chars().noneMatch(Character::isWhitespace);
+        return hasSingleAt && containsNoWhitespace;
     }
 
     public String name() {
