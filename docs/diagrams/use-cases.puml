@@ -1,0 +1,17 @@
+@startuml use-cases
+left to right direction
+actor Customer
+
+package FoodFlow {
+  usecase "Browse Restaurants and Menus" as UC1
+  usecase "Manage Cart" as UC2
+  usecase "Place a Cash Order" as UC3
+}
+
+Customer --> UC1
+Customer --> UC2
+Customer --> UC3
+
+UC2 .> UC1 : <<includes>>
+UC3 .> UC2 : <<includes>>
+@enduml

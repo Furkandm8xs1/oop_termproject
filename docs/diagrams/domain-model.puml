@@ -1,0 +1,53 @@
+@startuml domain-model
+hide methods
+
+class Customer {
+  id
+  address
+}
+
+class Restaurant {
+  name
+  cuisine
+  district
+  deliveryFee
+}
+
+class MenuItem {
+  id
+  name
+  category
+  price
+}
+
+class Cart {
+  subtotal
+  deliveryFee
+  total
+}
+
+class CartLine {
+  quantity
+}
+
+class Order {
+  number
+  status
+  subtotal
+  deliveryFee
+  total
+}
+
+class OrderLine {
+  quantity
+  priceAtOrderTime
+}
+
+Restaurant "1" *-- "*" MenuItem : offers
+Cart "1" *-- "*" CartLine : contains
+CartLine "*" --> "1" MenuItem : specifies
+Order "1" *-- "*" OrderLine : contains
+Customer "1" --> "*" Order : places
+Order "*" --> "1" Restaurant : sent to
+Cart "*" --> "0..1" Restaurant : from
+@enduml
