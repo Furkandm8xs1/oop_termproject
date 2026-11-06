@@ -1,22 +1,25 @@
 @startuml ssd-place-order
 skinparam style strictuml
 actor Customer
-participant "System" as S
+participant ":FoodFlow System" as S
 
-Customer -> S : placeOrder(cart)
-activate S
-S --> Customer : prompt for delivery address
-deactivate S
+Customer -> S : register(name, email, district, street)
+S --> Customer : customer confirmation & delivery address
 
-Customer -> S : provideAddress(address)
-activate S
-S -> S : validate(customer, cart)
-alt validation successful
-    S -> S : createOrder(status=PLACED)
-    S -> S : clear(cart)
-    S --> Customer : display order confirmation (orderNumber, total)
-else validation failed
-    S --> Customer : display error message (e.g. cart empty)
+Customer -> S : listRestaurants(cuisine, district)
+S --> Customer : matching restaurants
+
+Customer -> S : viewMenu(restaurantId)
+S --> Customer : restaurant menu grouped by category
+
+loop for each desired item
+    Customer -> S : addItem(itemId, quantity)
+    S --> Customer : item added, updated cart summary
 end
-deactivate S
+
+Customer -> S : viewCart()
+S --> Customer : cart summary (lines, subtotal, deliveryFee, total)
+
+Customer -> S : placeOrder()
+S --> Customer : order confirmation (number, status PLACED) & receipt
 @enduml
