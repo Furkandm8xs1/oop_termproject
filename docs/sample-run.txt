@@ -1,0 +1,102 @@
+FoodFlow — type 'help' for commands.
+> register --name Ali Yılmaz --email ali@example.com --district Kadıköy --street Moda Cad. 5
+Registered Ali Yılmaz <ali@example.com>.
+> restaurants
+  R01  Kebapçı Mehmet         Turkish     Kadıköy     delivery 25.00 TL
+  R02  Pizzeria Napoli        Italian     Beşiktaş    delivery 30.00 TL
+  R03  Burger Atölyesi        American    Kadıköy     delivery 20.00 TL
+  R04  Sushi İstanbul         Japanese    Şişli       delivery 35.00 TL
+  R05  Dönerci Usta           Turkish     Üsküdar     delivery 20.00 TL
+  R06  Yeşil Mutfak           Vegetarian  Beşiktaş    delivery 15.00 TL
+> restaurants --cuisine Turkish
+  R01  Kebapçı Mehmet         Turkish     Kadıköy     delivery 25.00 TL
+  R05  Dönerci Usta           Turkish     Üsküdar     delivery 20.00 TL
+> restaurants --cuisine Martian
+  No restaurants match your search. Try another cuisine or district.
+> menu R01
+  Kebapçı Mehmet (Turkish, Kadıköy)
+  Main
+    R01-01   Lahmacun                    140.00 TL
+    R01-02   Adana Kebap                 220.00 TL
+  Soup
+    R01-03   Mercimek Çorbası             70.00 TL
+  Dessert
+    R01-04   Künefe                      110.00 TL
+  Drink
+    R01-05   Ayran                        40.00 TL
+    R01-06   Şalgam                       45.00 TL
+> add R01-01 2
+Added Lahmacun.
+Cart from Kebapçı Mehmet
+  R01-01  2 x Lahmacun  280.00 TL
+  Subtotal: 280.00 TL
+  Delivery: 25.00 TL
+  Total:    305.00 TL
+> add R01-04 1
+Added Künefe.
+Cart from Kebapçı Mehmet
+  R01-01  2 x Lahmacun  280.00 TL
+  R01-04  1 x Künefe  110.00 TL
+  Subtotal: 390.00 TL
+  Delivery: 25.00 TL
+  Total:    415.00 TL
+> add R01-05 1
+Added Ayran.
+Cart from Kebapçı Mehmet
+  R01-01  2 x Lahmacun  280.00 TL
+  R01-04  1 x Künefe  110.00 TL
+  R01-05  1 x Ayran  40.00 TL
+  Subtotal: 430.00 TL
+  Delivery: 25.00 TL
+  Total:    455.00 TL
+> add R01-01 1
+Added Lahmacun.
+Cart from Kebapçı Mehmet
+  R01-01  3 x Lahmacun  420.00 TL
+  R01-04  1 x Künefe  110.00 TL
+  R01-05  1 x Ayran  40.00 TL
+  Subtotal: 570.00 TL
+  Delivery: 25.00 TL
+  Total:    595.00 TL
+> add R02-01 1
+Error: Your cart has items from Kebapçı Mehmet. Empty the cart first to order from Pizzeria Napoli.
+> add R01-05 25
+Error: Quantity must be between 1 and 20 (got 25).
+> add R01-05 two
+Error: 'two' is not a whole number for quantity.
+> qty R01-05 2
+Cart from Kebapçı Mehmet
+  R01-01  3 x Lahmacun  420.00 TL
+  R01-04  1 x Künefe  110.00 TL
+  R01-05  2 x Ayran  80.00 TL
+  Subtotal: 610.00 TL
+  Delivery: 25.00 TL
+  Total:    635.00 TL
+> cart
+Cart from Kebapçı Mehmet
+  R01-01  3 x Lahmacun  420.00 TL
+  R01-04  1 x Künefe  110.00 TL
+  R01-05  2 x Ayran  80.00 TL
+  Subtotal: 610.00 TL
+  Delivery: 25.00 TL
+  Total:    635.00 TL
+> order
+  ---------------- RECEIPT ----------------
+  Order #1001  status: PLACED
+  Restaurant: Kebapçı Mehmet
+  Customer:   Ali Yılmaz <ali@example.com>
+  Deliver to: Kadıköy, Moda Cad. 5
+     3 x Lahmacun              140.00 TL    420.00 TL
+     1 x Künefe                110.00 TL    110.00 TL
+     2 x Ayran                  40.00 TL     80.00 TL
+  Subtotal:                                610.00 TL
+  Delivery fee:                             25.00 TL
+  Total:                                   635.00 TL
+  Payment: cash on delivery
+  -----------------------------------------
+> cart
+Your cart is empty.
+> orders
+  #1001  Kebapçı Mehmet         PLACED     635.00 TL
+> exit
+Goodbye.

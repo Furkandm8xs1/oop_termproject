@@ -1,17 +1,47 @@
 @startuml use-cases
 left to right direction
-actor Customer
 
-package FoodFlow {
-  usecase "Browse Restaurants and Menus" as UC1
-  usecase "Manage Cart" as UC2
-  usecase "Place a Cash Order" as UC3
+actor "Customer" as Customer
+actor "Restaurant Owner" as Owner
+actor "Courier" as Courier
+actor "Administrator" as Admin
+
+rectangle "FoodFlow Platform" {
+  usecase "★ UC1: Identify Customer" as UC1
+  usecase "★ UC2: Browse Restaurants" as UC2
+  usecase "★ UC3: Filter Restaurants" as UC3
+  usecase "★ UC4: View Menu" as UC4
+  usecase "★ UC5: Manage Cart" as UC5
+  usecase "★ UC6: Place Order" as UC6
+  usecase "★ UC7: View My Orders" as UC7
+  usecase "UC8: Pay Online / Apply Promotion" as UC8
+  usecase "UC9: Manage Menu" as UC9
+  usecase "UC10: Accept / Prepare Order" as UC10
+  usecase "UC11: Set Opening Hours & Min Basket" as UC11
+  usecase "UC12: Deliver Order" as UC12
+  usecase "UC13: Track Order Status" as UC13
+  usecase "UC14: Manage Restaurants & Users" as UC14
 }
 
 Customer --> UC1
 Customer --> UC2
 Customer --> UC3
+Customer --> UC4
+Customer --> UC5
+Customer --> UC6
+Customer --> UC7
+Customer --> UC8
+Customer --> UC13
 
-UC2 .> UC1 : <<includes>>
-UC3 .> UC2 : <<includes>>
+Owner --> UC9
+Owner --> UC10
+Owner --> UC11
+
+Courier --> UC12
+
+Admin --> UC14
+
+note bottom of FoodFlow
+  ★ marks Iteration 1 (I1) scope
+end note
 @enduml

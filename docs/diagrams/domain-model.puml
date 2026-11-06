@@ -1,16 +1,24 @@
 @startuml domain-model
 hide methods
+hide circle
 
 class Customer {
-  id
-  address
+  name
+  email
+}
+
+class DeliveryAddress {
+  district
+  street
 }
 
 class Restaurant {
+  id
   name
   cuisine
   district
   deliveryFee
+  minimumBasket
 }
 
 class MenuItem {
@@ -28,6 +36,7 @@ class Cart {
 
 class CartLine {
   quantity
+  lineTotal
 }
 
 class Order {
@@ -39,15 +48,21 @@ class Order {
 }
 
 class OrderLine {
+  itemId
+  itemName
+  unitPrice
   quantity
-  priceAtOrderTime
+  lineTotal
 }
 
-Restaurant "1" *-- "*" MenuItem : offers
-Cart "1" *-- "*" CartLine : contains
-CartLine "*" --> "1" MenuItem : specifies
-Order "1" *-- "*" OrderLine : contains
-Customer "1" --> "*" Order : places
-Order "*" --> "1" Restaurant : sent to
-Cart "*" --> "0..1" Restaurant : from
+Customer "1" --> "1" DeliveryAddress : has
+Customer "1" --> "0..1" Cart : fills
+Cart "1" *-- "0..*" CartLine : contains
+CartLine "*" --> "1" MenuItem : refers to
+Cart "*" --> "0..1" Restaurant : is for
+Restaurant "1" *-- "1..*" MenuItem : offers
+Customer "1" --> "0..*" Order : places
+Order "*" --> "1" Restaurant : ordered from
+Order "1" *-- "1..*" OrderLine : consists of
+Order "*" --> "1" DeliveryAddress : delivered to
 @enduml
