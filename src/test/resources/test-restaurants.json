@@ -1,0 +1,24 @@
+{
+  "restaurants": [
+    {
+      "id": "T01",
+      "name": "Çiğköfteci Şükrü",
+      "cuisine": "Turkish",
+      "district": "Üsküdar",
+      "deliveryFee": 12.50,
+      "minimumBasket": 100.00,
+      "menu": [
+        { "id": "T01-01", "name": "Çiğ Köfte Dürüm", "category": "Main", "price": 25.00 },
+        { "id": "T01-02", "name": "Ayran", "category": "Drink", "price": 30.50 }
+      ]
+    },
+    {
+      "id": "T02",
+      "name": "İkinci Restoran",
+      "cuisine": "Turkish",
+      "district": "Kadıköy",
+      "deliveryFee": 10.00,
+      "menu": []
+    }
+  ]
+}
