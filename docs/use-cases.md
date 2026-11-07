@@ -76,38 +76,41 @@ flowchart LR
 
 ### Main Success Scenario
 1. The customer selects a menu item ID and specifies a quantity to add.
-2. The system verifies that the menu item exists, validates the quantity (BR-1), verifies that the item belongs to the same restaurant as the cart (BR-2), adds the item to the cart, and displays the updated cart with line totals, subtotal, delivery fee, and total (BR-5).
-3. The customer repeats step 1–2 for additional menu items.
+2. The system verifies that the menu item exists, validates the quantity (BR-1), verifies that the item belongs to the same restaurant as the cart (BR-2), adds the item to the cart (an item already in the cart only gets a higher quantity, BR-3), and displays the updated cart with line totals, subtotal, delivery fee, and total (BR-5).
+3. The customer repeats steps 1-2 for additional menu items.
 4. The customer requests to change the quantity of an item in the cart.
 5. The system validates the new quantity (BR-1), updates the cart line, and displays the updated cart.
 6. The customer requests to remove an item from the cart.
 7. The system removes the corresponding line and displays the updated cart.
 
 ### Extensions (Alternative Flows & Business Rule Violations)
-- **1a. The customer views the cart directly (`cart`):**
+- 1a. The customer only wants to see the cart (`cart`):
   1. If the cart has items, the system displays the restaurant name, each cart line (item ID, quantity, name, line total), subtotal, delivery fee, and total (BR-5).
   2. If the cart is empty, the system informs the customer that the cart is empty.
-- **2a. The menu item ID does not exist:**
-  1. The system rejects the operation with a clear message naming the unknown item ID (BR-9); the cart remains unchanged.
-- **2b. The quantity is missing or not a whole number (BR-9):**
+- 2a. The menu item ID does not exist (BR-9):
+  1. The system rejects the operation with a clear message naming the unknown item ID; the cart remains unchanged.
+- 2b. The quantity is missing or not a whole number (BR-9):
   1. The system informs the customer that quantity must be a whole number; the cart remains unchanged.
-- **2c. The quantity is less than 1 or greater than 20 (BR-1):**
+- 2c. The quantity is less than 1 or greater than 20 (BR-1):
   1. The system rejects the operation stating that quantity must be between 1 and 20; the cart remains unchanged.
-- **2d. The item belongs to a different restaurant than the items currently in the cart (BR-2):**
+- 2d. The item belongs to a different restaurant than the items currently in the cart (BR-2):
   1. The system refuses to add the item and informs the customer which restaurant the cart currently belongs to, advising them to empty the cart first (`clear`).
   2. The cart remains unchanged.
-- **2e. The item is already in the cart (BR-3):**
+- 2e. The item is already in the cart (BR-3):
   1. The system adds the new quantity to the existing cart line instead of creating a second line.
-  2. *2e1. The summed quantity exceeds 20 (BR-1):* The system rejects the addition and keeps the existing line's previous quantity unchanged.
-- **5a. The new quantity is outside 1..20 (BR-1):**
+- 2e1. The summed quantity of that line would exceed 20 (BR-1, BR-3):
+  1. The system rejects the addition and keeps the existing line's previous quantity.
+- 5a. The new quantity is less than 1 or greater than 20 (BR-1):
   1. The system rejects the update; the cart line retains its previous quantity.
-- **5b / 7a. The specified item ID is not currently in the cart:**
+- 5b. The item whose quantity should change is not in the cart (BR-9):
   1. The system reports that the item is not in the cart; the cart remains unchanged.
-- **7b. Removing the item leaves the cart with zero lines:**
-  1. The system clears the cart's restaurant association so the customer may now add items from any restaurant (BR-2).
-- **7c. The customer explicitly clears the cart (`clear`):**
-  1. The system removes all cart lines and resets the cart's restaurant association.
-- **\*a. Invalid command syntax or option at any time (BR-9):**
+- 6a. The customer empties the whole cart (`clear`) instead of removing one item:
+  1. The system removes all cart lines and resets the cart's restaurant association, so any restaurant can be used next (BR-2).
+- 7a. The item to remove is not in the cart (BR-9):
+  1. The system reports that the item is not in the cart; the cart remains unchanged.
+- 7b. The removed line was the last one (BR-2):
+  1. The system clears the cart's restaurant association so the customer may now add items from any restaurant.
+- *a. Invalid command syntax or option at any time (BR-9):
   1. The system prints a friendly error message without terminating the program, allowing the customer to continue.
 
 ### Special Requirements
@@ -145,13 +148,17 @@ flowchart LR
 7. The system prints the order confirmation message and a detailed cash-on-delivery receipt showing the order number, status, restaurant, customer, delivery address, itemized lines, subtotal, delivery fee, total in `TL`, and payment method.
 
 ### Extensions (Alternative Flows & Business Rule Violations)
-- **2a. No customer is currently identified (BR-4):**
+- 2a. No customer is currently identified (BR-4):
   1. The system refuses to place the order and instructs the customer to identify themselves first (`register` or `login`).
   2. No order is created, no order number is consumed, and the cart remains untouched.
-- **2b. The cart is empty (BR-4):**
+  3. The customer registers or logs in (UC1) and continues at step 1.
+- 2b. The cart is empty (BR-4):
   1. The system refuses to place the order and informs the customer that the cart is empty.
   2. No order is created and no order number is consumed.
-- **\*a. Invalid command input at any time (BR-9):**
+  3. The customer adds items (UC5) and continues at step 1.
+- 2c. The customer has no delivery address (BR-4):
+  1. The system refuses to place the order. (A customer cannot be registered without an address, so this cannot happen in Iteration 1; the check is still made in the domain.)
+- *a. Invalid command input at any time (BR-9):
   1. The system displays a clear error message and keeps the session running.
 
 ### Special Requirements
