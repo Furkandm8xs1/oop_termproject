@@ -42,7 +42,7 @@ Main area of use: **documentation** (glossary, use cases, vision, report) and di
 - **Asked:** Help editing `.github/workflows/ci.yml` so the build and tests run on every push.
 - **Accepted:** The workflow structure suggested by Copilot (checkout, Java setup, Maven build and test steps).
 - **Changed:** We adjusted it to our project (Java version, Maven commands) and checked that the run passes on GitHub.
-- **Rejected:** *(TODO: write any Copilot suggestion you did not use, or "nothing significant".)*
+- **Rejected:** Nothing significant.
 
 ## Reflection
 

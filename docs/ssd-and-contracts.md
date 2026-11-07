@@ -49,7 +49,7 @@ sequenceDiagram
 
 ## Operation Contract CO1: `addItem(itemId, quantity)`
 
-- **Operation:** `addItem(itemId: String, quantity: int)`
+- **Operation:** `addItem(itemId, quantity)`
 - **Cross References:** Use Cases *Manage Cart (UC5)*, *Place Order (UC6)*
 - **Preconditions:**
   - A `Restaurant` in `RestaurantCatalog` offers a `MenuItem` whose `id` matches `itemId` (case-insensitive).
