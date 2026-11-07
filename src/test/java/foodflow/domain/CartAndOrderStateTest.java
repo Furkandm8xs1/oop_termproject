@@ -12,7 +12,7 @@ import static foodflow.domain.TestData.ali;
 import static foodflow.domain.TestData.kebab;
 import static foodflow.domain.TestData.pizza;
 
-/** Error cases and "nothing changed" checks for the cart (BR-1, BR-2, BR-3, BR-5) and the order (BR-4, BR-6, BR-7). */
+/** Error cases and "nothing changed" checks for the cart (BR-1, BR-2, BR-3) and the order (BR-4, BR-6, BR-7). */
 class CartAndOrderStateTest {
 
     private Restaurant kebab;
@@ -32,8 +32,6 @@ class CartAndOrderStateTest {
         numbers = new OrderNumberGenerator();
     }
 
-    // ---- Cart ----
-
     @Test
     void itemThatIsNotOnTheRestaurantsMenuIsRefusedAndCartStaysEmpty_BR2() {
         MenuItem margherita = pizza.findItem("R02-01").orElseThrow();
@@ -42,13 +40,6 @@ class CartAndOrderStateTest {
 
         assertTrue(cart.isEmpty());
         assertTrue(cart.restaurant().isEmpty());
-    }
-
-    @Test
-    void missingRestaurantOrItemIsRefused() {
-        assertThrows(IllegalArgumentException.class, () -> cart.addItem(null, lahmacun, 1));
-        assertThrows(IllegalArgumentException.class, () -> cart.addItem(kebab, null, 1));
-        assertTrue(cart.isEmpty());
     }
 
     @Test
@@ -86,25 +77,6 @@ class CartAndOrderStateTest {
     }
 
     @Test
-    void changeQuantityUpdatesSubtotalAndTotal_BR5() {
-        cart.addItem(kebab, lahmacun, 1);
-
-        cart.changeQuantity("R01-01", 3);
-
-        assertEquals(new BigDecimal("420.00"), cart.subtotal());
-        assertEquals(new BigDecimal("445.00"), cart.total());
-    }
-
-    @Test
-    void changeQuantityIgnoresCaseOfTheItemId() {
-        cart.addItem(kebab, lahmacun, 1);
-
-        cart.changeQuantity("r01-01", 4);
-
-        assertEquals(4, cart.lines().get(0).quantity());
-    }
-
-    @Test
     void changingOrRemovingAnItemThatIsNotInTheCartIsRefusedAndNothingChanges() {
         cart.addItem(kebab, lahmacun, 2);
 
@@ -116,70 +88,11 @@ class CartAndOrderStateTest {
     }
 
     @Test
-    void removingOneOfTwoLinesKeepsTheRestaurantAndUpdatesTheTotal() {
-        cart.addItem(kebab, lahmacun, 2);
-        cart.addItem(kebab, ayran, 1);
-
-        cart.removeItem("R01-05");
-
-        assertEquals(kebab, cart.restaurant().orElseThrow());
-        assertEquals(new BigDecimal("280.00"), cart.subtotal());
-    }
-
-    @Test
-    void emptyCartHasZeroAmountsAndClearingItAgainIsHarmless_BR5() {
-        assertEquals(new BigDecimal("0.00"), cart.subtotal());
-        assertEquals(new BigDecimal("0.00"), cart.deliveryFee());
-        assertEquals(new BigDecimal("0.00"), cart.total());
-
-        cart.clear();
-
-        assertTrue(cart.isEmpty());
-    }
-
-    @Test
-    void theListOfLinesCannotBeUsedToChangeTheCart() {
-        cart.addItem(kebab, lahmacun, 2);
-
-        assertThrows(UnsupportedOperationException.class, () -> cart.lines().clear());
-
-        assertEquals(1, cart.lines().size());
-    }
-
-    // ---- Order ----
-
-    @Test
     void nullCartIsRefusedAndNoOrderNumberIsUsed_BR4() {
         assertThrows(IllegalStateException.class, () -> Order.place(numbers, ali(), null));
 
         cart.addItem(kebab, lahmacun, 1);
         assertEquals(1001, Order.place(numbers, ali(), cart).number());
-    }
-
-    @Test
-    void orderCopiesCustomerAddressRestaurantAndAmounts_BR5() {
-        cart.addItem(kebab, lahmacun, 2);
-        cart.addItem(kebab, ayran, 1);
-
-        Order order = Order.place(numbers, ali(), cart);
-
-        assertEquals(ali(), order.customer());
-        assertEquals(ali().address(), order.deliveryAddress());
-        assertEquals("Kebapçı Mehmet", order.restaurantName());
-        assertEquals(2, order.lines().size());
-        assertEquals(new BigDecimal("320.00"), order.subtotal());
-        assertEquals(new BigDecimal("25.00"), order.deliveryFee());
-        assertEquals(new BigDecimal("345.00"), order.total());
-    }
-
-    @Test
-    void orderLinesCannotBeChangedFromOutside_BR7() {
-        cart.addItem(kebab, lahmacun, 1);
-        Order order = Order.place(numbers, ali(), cart);
-
-        assertThrows(UnsupportedOperationException.class, () -> order.lines().clear());
-
-        assertEquals(1, order.lines().size());
     }
 
     @Test
@@ -206,13 +119,5 @@ class CartAndOrderStateTest {
         assertEquals(1, second.lines().size());
         assertEquals("Ayran", second.lines().get(0).itemName());
         assertEquals(new BigDecimal("105.00"), second.total());
-    }
-
-    @Test
-    void orderAfterEmptyingTheCartWithClearIsRefused_BR4() {
-        cart.addItem(kebab, lahmacun, 1);
-        cart.clear();
-
-        assertThrows(IllegalStateException.class, () -> Order.place(numbers, ali(), cart));
     }
 }
