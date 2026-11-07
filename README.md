@@ -1,69 +1,62 @@
 # FoodFlow
 
-FoodFlow, CSE3063 dönem projesi kapsamında geliştirilen Java 21 tabanlı bir yemek siparişi konsol uygulamasıdır. Kullanıcı restoranları ve menüleri görüntüleyebilir, restoran veya semt mutfağına göre filtreleme yapabilir, sepetini yönetebilir ve kapıda nakit ödeme ile sipariş verebilir.
+FoodFlow is a Java 21 console food-ordering application built for the CSE3063 term project (Iteration 1, Team 11). A customer can browse restaurants and menus, filter restaurants by cuisine or district, manage a shopping cart and place a cash-on-delivery order.
 
-Restoran ve menü bilgileri UTF-8 biçimindeki [`data/restaurants.json`](data/restaurants.json) dosyasından okunur. Uygulama kapsamındaki müşteri ve sipariş bilgileri çalışma sırasında bellekte tutulur; uygulama kapandığında silinir.
+Restaurant and menu data is read from the UTF-8 file [`data/restaurants.json`](data/restaurants.json). Customers and orders are kept in memory only and are lost when the application exits.
 
-## Gereksinimler
+## Features
+
+- Register a customer (name, email, delivery address) and log in by email.
+- List restaurants, filtered by cuisine and/or district.
+- Show a restaurant's menu.
+- Add items to a cart, change quantities, remove items or clear the cart.
+- Place a cash-on-delivery order and receive a receipt with an order number.
+- List the orders placed by the logged-in customer in the current session.
+- Friendly error messages for invalid input (unknown commands, missing arguments, unknown options, non-numeric quantities).
+
+## Requirements
 
 - Java 21
-- Maven 3.9 veya üzeri (yerel derleme ve test için)
-- Docker Desktop veya Docker Engine ve Docker Compose v2 (Docker ile çalıştırmak için)
+- Maven 3.9 or newer
+- Docker and Docker Compose v2 (optional, only to run in a container)
 
-## Testleri çalıştırma
+## Build and test
 
-Proje kök dizininde terminal açıp tüm JUnit testlerini çalıştırın:
+Run all JUnit tests from the project root:
 
 ```bash
 mvn test
 ```
 
-Başarılı çalışmada Maven `BUILD SUCCESS` mesajını gösterir. Test kaynak kodları `src/test/java` altındadır; test verileri `src/test/resources` içindedir.
+Maven prints `BUILD SUCCESS` when all tests pass. Test sources are in `src/test/java` and test data is in `src/test/resources`. The same tests run on every push through GitHub Actions (`.github/workflows/ci.yml`).
 
-## Uygulamayı Maven ile çalıştırma
+## Run
 
-Önce paketleyip testleri de çalıştırın:
+Package the application (this also runs the tests) and start the executable JAR:
 
 ```bash
 mvn package
-```
-
-Ardından çalıştırılabilir JAR dosyasını başlatın:
-
-```bash
 java -jar target/foodflow.jar
 ```
 
-Varsayılan restoran verisi `data/restaurants.json` dosyasından yüklenir. Başka bir JSON dosyası kullanmak için dosya yolunu uygulamaya argüman olarak verebilirsiniz:
+By default the restaurant data is loaded from `data/restaurants.json`. To use another file, pass its path as an argument:
 
 ```bash
-java -jar target/foodflow.jar /dosya/yolu/restaurants.json
+java -jar target/foodflow.jar /path/to/restaurants.json
 ```
 
-## Docker ile derleme ve çalıştırma
-
-Docker Desktop/Engine çalışır durumdayken proje kökünde aşağıdaki komutları kullanın:
+### Run with Docker (optional)
 
 ```bash
 docker compose build
 docker compose run --rm foodflow
 ```
 
-İlk komut Docker imajını oluşturur. Dockerfile, Maven ve Java 21 içeren derleme aşamasında kaynakları derler, testleri çalıştırır ve uygulama JAR'ını üretir. Testlerden biri başarısız olursa imaj derlemesi de başarısız olur.
+The image build compiles the sources, runs the tests and produces the JAR. FoodFlow waits for keyboard input, so use `docker compose run --rm foodflow` rather than `docker compose up`. To run only the tests in Docker: `docker compose --profile test run --rm test`.
 
-İkinci komut konsol uygulamasını terminalde etkileşimli olarak başlatır. Çıkmak için `exit` veya `quit` yazın. `--rm`, uygulama kapandığında geçici konteyneri siler. `data` dizini konteynere salt okunur bağlandığı için JSON verisini değiştirmek için imajı yeniden oluşturmanız gerekmez.
+## Console commands
 
-Testleri yalnızca Docker ortamında çalıştırmak için:
-
-```bash
-docker compose --profile test run --rm test
-```
-
-FoodFlow klavyeden komut bekleyen bir konsol programıdır; arka planda servis olarak çalıştırılmaz. Bu nedenle `docker compose up -d` yerine `docker compose run --rm foodflow` kullanın.
-
-## Konsol komutları
-
-Uygulama açıldığında `help` yazarak komut listesini görebilirsiniz. Örnek akış:
+Type `help` after starting the application to list all commands. Example session:
 
 ```text
 register --name Ali Yılmaz --email ali@example.com --district Kadıköy --street Moda Caddesi 5
@@ -76,45 +69,68 @@ orders
 exit
 ```
 
-Desteklenen komutlar:
-
-| Komut | Açıklama |
+| Command | Description |
 | --- | --- |
-| `restaurants [--cuisine MUTFAK] [--district SEMT]` | Restoranları listeler veya filtreler. |
-| `menu RESTORAN_ID` | Restoranın menüsünü gösterir. |
-| `add ÜRÜN_ID ADET` | Sepete ürün ekler. |
-| `cart` | Sepet içeriğini ve tutarları gösterir. |
-| `qty ÜRÜN_ID ADET` | Sepetteki ürün miktarını değiştirir. |
-| `remove ÜRÜN_ID` | Ürünü sepetten kaldırır. |
-| `clear` | Sepeti boşaltır. |
-| `register --name AD --email EPOSTA --district SEMT --street SOKAK` | Müşteri kaydı oluşturur ve giriş yapar. |
-| `login EPOSTA` | Mevcut müşteriyle giriş yapar. |
-| `order` | Sepetteki ürünler için kapıda nakit sipariş oluşturur ve fişi gösterir. |
-| `orders` | Giriş yapan müşterinin bu oturumdaki siparişlerini listeler. |
-| `help`, `exit` | Yardımı gösterir veya uygulamadan çıkar. |
+| `restaurants [--cuisine CUISINE] [--district DISTRICT]` | Lists restaurants, optionally filtered. |
+| `menu RESTAURANT_ID` | Shows the menu of a restaurant. |
+| `add ITEM_ID QUANTITY` | Adds an item to the cart. |
+| `cart` | Shows the cart lines and totals. |
+| `qty ITEM_ID QUANTITY` | Changes the quantity of a cart item. |
+| `remove ITEM_ID` | Removes an item from the cart. |
+| `clear` | Empties the cart. |
+| `register --name NAME --email EMAIL --district DISTRICT --street STREET` | Creates a customer and logs in. |
+| `login EMAIL` | Logs in as an existing customer. |
+| `order` | Places a cash-on-delivery order for the cart and prints the receipt. |
+| `orders` | Lists the logged-in customer's orders in this session. |
+| `help`, `exit` | Shows help or quits. |
 
-## Proje yapısı
+## Business rules (summary)
+
+- A cart may contain items from one restaurant only.
+- Item quantity must be between 1 and 20; adding an item that is already in the cart increases its quantity.
+- Placing an order requires a logged-in customer and a non-empty cart.
+- The order total is the subtotal plus the restaurant's delivery fee (money is handled with `BigDecimal`).
+- When an order is placed, an order number is generated and the cart is emptied.
+
+The full list of business rules (BR ids) is in [`docs/glossary.md`](docs/glossary.md) and [`docs/use-cases.md`](docs/use-cases.md).
+
+## Architecture
+
+The code is split into layers; dependencies point inwards towards the domain.
 
 ```text
 src/main/java/foodflow/
-├── App.java                    # Nesneleri oluşturur, veriyi yükler ve arayüzü başlatır
-├── application/                # Kullanım senaryoları ve OrderingService
-├── domain/                     # Restoran, menü, müşteri, sepet ve sipariş kuralları
-├── infrastructure/             # JSON dosyasını domain nesnelerine yükler
-└── ui/                         # Konsol komutlarını okur ve çıktıları biçimlendirir
-
-src/test/java/                  # JUnit testleri
-src/test/resources/             # Testlerde kullanılan JSON verileri
-data/restaurants.json           # Uygulamanın restoran ve menü verileri
-Dockerfile                      # Çok aşamalı Maven derlemesi ve Java çalışma imajı
-docker-compose.yml              # Uygulama ve test servisleri
-pom.xml                         # Maven bağımlılıkları ve derleme ayarları
+├── App.java              # Wires the objects, loads the data and starts the UI
+├── application/          # OrderingService (use-case logic) and CartSummary
+├── domain/               # Restaurant, MenuItem, Customer, Cart, Order and the business rules
+├── infrastructure/       # JsonRestaurantLoader: reads the JSON file into domain objects
+└── ui/                   # ConsoleUI, Command parser and ConsoleFormatter
 ```
 
-## İş kurallarının özeti
+- **ui**: `Command` parses and validates a typed line; `ConsoleUI` dispatches it; `ConsoleFormatter` formats output.
+- **application**: `OrderingService` coordinates customers, catalog, cart and orders.
+- **domain**: holds the rules (quantity limits, single-restaurant cart, totals, order status).
+- **infrastructure**: loads restaurant data and reports problems with `DataLoadException`.
 
-- Sepette tek bir restorana ait ürünler bulunabilir.
-- Ürün miktarı 1–20 arasında olmalıdır; aynı ürün yeniden eklenirse miktarı artırılır.
-- Sipariş vermek için müşteri girişi ve boş olmayan bir sepet gerekir.
-- Toplam tutar ara toplam ile restoranın teslimat ücretinin toplamıdır.
-- Sipariş verildiğinde sipariş numarası oluşturulur ve sepet boşaltılır.
+## Repository layout
+
+```text
+src/main/java/          # Application source
+src/test/java/          # JUnit tests
+src/test/resources/     # JSON data used by tests
+data/restaurants.json   # Restaurant and menu data
+docs/                   # Vision, glossary, use cases, supplementary spec (FURPS+),
+│                       # iteration plan, diagrams (PlantUML) and AI usage log
+pom.xml                 # Maven build
+Dockerfile, docker-compose.yml   # Optional container setup
+```
+
+## Documentation
+
+- [Vision](docs/vision.md)
+- [Glossary](docs/glossary.md)
+- [Use cases](docs/use-cases.md)
+- [Supplementary specification (FURPS+)](docs/supplementary-spec.md)
+- [Iteration plan and risks](docs/iteration-plan.md)
+- [AI usage log](docs/ai-usage-log.md)
+- Diagrams: [`docs/diagrams/`](docs/diagrams/)
