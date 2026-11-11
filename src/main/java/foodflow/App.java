@@ -19,6 +19,15 @@ public final class App {
 
     private static final String DEFAULT_DATA_FILE = "data/restaurants.json";
 
+    /** ASCII-art title printed once at startup (backslashes are doubled for the Java text block). */
+    private static final String BANNER = """
+             _____                 _ _____ _
+            |  ___|__   ___   __| |  ___| | _____      __
+            | |_ / _ \\ / _ \\ / _` | |_  | |/ _ \\ \\ /\\ / /
+            |  _| (_) | (_) | (_| |  _| | | (_) \\ V  V /
+            |_|  \\___/ \\___/ \\__,_|_|   |_|\\___/ \\_/\\_/
+            """;
+
     private App() {
     }
 
@@ -38,6 +47,8 @@ public final class App {
             System.exit(1);
             return;
         }
+
+        out.println(BANNER);
 
         OrderingService service = new OrderingService(catalog, new CustomerRegistry(), new OrderNumberGenerator());
         boolean echo = Boolean.parseBoolean(System.getenv().getOrDefault("FOODFLOW_ECHO", "false"));
